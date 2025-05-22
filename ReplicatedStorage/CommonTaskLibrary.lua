@@ -20,7 +20,7 @@ end
 
 module.flipNumberChance = function(baseNumber : number)
 	-- # 50/50 chance a number will flip to its inverse.
-	return baseNumber * (math.random(1, 2) == 1 and -1 or 1)
+	return baseNumber * (moduleRandom:NextInteger(1, 2) == 1 and -1 or 1)
 end
 
 module.fireFromList = function(playerList : {[number]:Player}, remoteEvent : RemoteEvent, ...)
@@ -227,7 +227,7 @@ module.getRandomEntryFromDictionary = function(dictionary : {[any] : any})
 		table.insert(keys, index)
 	end
 
-	return keys[math.random(1, #keys)]
+	return keys[moduleRandom:NextInteger(1, #keys)]
 
 end
 
@@ -237,7 +237,7 @@ module.shuffleArray = function(array : {any})
 	-- @array [1] is expected, else an error will throw.
 	
 	for i = #array, 2, -1 do
-		local j = math.random(i)
+		local j = moduleRandom:NextInteger(1, i)
 		array[i], array[j] = array[j], array[i]
 	end
 	
@@ -257,7 +257,7 @@ module.shuffleDictionary = function(dictionary : {[any] : any})
 	end
 
 	for i = #newArray, 2, -1 do
-		local j = math.random(i)
+		local j = moduleRandom:NextInteger(1, i)
 		newArray[i], newArray[j] = newArray[j], newArray[i]
 	end
 
