@@ -11,7 +11,7 @@ module.safeGetObject = function(searchInstance : Instance?, lookForName : string
 
 	-- Does not expect @searchInstance [1] to exist, nor be an instance.
 	-- Does not expect @lookForName [2] to exist, nor be a sting.
-
+	
 	if (typeof(searchInstance) == "Instance") and (not module.isBlankString(lookForName)) then
 		return searchInstance:FindFirstChild(lookForName)
 	end
@@ -336,7 +336,7 @@ module.isBlankString = function(text : string?)
 		return true
 	end
 	
-	return string.match(text, "^%s*$") == nil
+	return string.match(text, "^%s*$") ~= nil
 	
 end
 
