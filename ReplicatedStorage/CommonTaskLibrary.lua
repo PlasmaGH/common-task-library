@@ -51,21 +51,6 @@ module.fireAllExcept = function(exceptList : {[number]:Player}, remoteEvent : Re
 
 end
 
-module.generateVector3Circle = function(radius : number,  center : Vector3,  numPoints : number)
-
-	local points = {}
-
-	for i = 1, numPoints do
-		local angle = math.rad((i / numPoints) * -360)
-		local x = radius * math.cos(angle)
-		local z = radius * math.sin(angle) 
-		table.insert(points, center + Vector3.new(x, 0, z))
-	end
-
-	return points;
-
-end
-
 module.clearThread = function(thread : thread?)
 
 	-- # Does not expect @thread [1]
@@ -101,7 +86,7 @@ module.instance2 = function(itemType : string, itemData : {[string] : any?})
 	return newInstance.setObjectProperties(
 		item, 
 		itemData
-	) --> returns the object instance
+	);
 
 end
 
@@ -130,7 +115,7 @@ module.getAnimator = function(humanoid : Humanoid)
 	return humanoid:FindFirstChild("Animator") or module.instance2("Animator", {
 		Name = "Animator",
 		Parent = humanoid
-	})
+	});
 
 end
 
@@ -190,7 +175,7 @@ module.easyWeld = function(part0 : BasePart, part1 : BasePart, isMotor6D : boole
 	-- if @IsMotor6D is true, a Motor6D is created, otherwise a WeldConstraint is created.
 	-- # Returns the constraint that was created.
 
-	return module.setObjectProperties((isMotor6D and "Motor6D" or "WeldConstraint"), {
+	return module.instance2((isMotor6D and "Motor6D" or "WeldConstraint"), {
 
 		Part0 = part0,
 		Part1 = part1,
@@ -202,9 +187,14 @@ module.easyWeld = function(part0 : BasePart, part1 : BasePart, isMotor6D : boole
 end
 
 module.safeDestroy = function(object : Instance?)
+	
+	-- # does not expect @object [1]
+	-- # this function lets you "call destroy" without having to check if the object exists or is the correct type
+	
 	if object and typeof(object) == "Instance" then
 		object:Destroy()
 	end
+	
 end;
 
 module.getIndexesInDictionary = function(dictionary : {[any] : any})
