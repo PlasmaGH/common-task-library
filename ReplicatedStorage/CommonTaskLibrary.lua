@@ -11,7 +11,7 @@ module.safeGetObject = function(searchInstance : Instance?, lookForName : string
 
 	-- Does not expect @searchInstance [1] to exist, nor be an instance.
 	-- Does not expect @lookForName [2] to exist, nor be a sting.
-	
+
 	if (typeof(searchInstance) == "Instance") and (not module.isBlankString(lookForName)) then
 		return searchInstance:FindFirstChild(lookForName)
 	end
@@ -83,8 +83,8 @@ module.instance2 = function(itemType : string, itemData : {[string] : any?})
 
 	local newInstance = Instance.new(itemType);
 
-	return newInstance.setObjectProperties(
-		item, 
+	return module.setObjectProperties(
+		newInstance, 
 		itemData
 	);
 
@@ -183,25 +183,25 @@ module.easyWeld = function(part0 : BasePart, part1 : BasePart, isMotor6D : boole
 		Parent = part0
 
 	});
-	
+
 end
 
 module.safeDestroy = function(object : Instance?)
-	
+
 	-- # does not expect @object [1]
 	-- # this function lets you "call destroy" without having to check if the object exists or is the correct type
-	
+
 	if object and typeof(object) == "Instance" then
 		object:Destroy()
 	end
-	
+
 end;
 
 module.getIndexesInDictionary = function(dictionary : {[any] : any})
-	
+
 	-- # Returns the amount of indexes inside of a dictionary.
 	-- @dictionary [1] is not required, and will return (number) 0 if the argument is missing or is not a table.
-	
+
 	if typeof(dictionary) ~= "table" then
 		return 0
 	end
@@ -220,7 +220,7 @@ module.getRandomEntryFromDictionary = function(dictionary : {[any] : any})
 
 	-- # Returns a random index from a dictionary.
 	-- @dictionary [1] is expected, else an error will throw.
-	
+
 	local keys = {}
 
 	for index in dictionary do
@@ -232,26 +232,26 @@ module.getRandomEntryFromDictionary = function(dictionary : {[any] : any})
 end
 
 module.shuffleArray = function(array : {any})
-	
+
 	-- # Returns a randomy shuffled version of given @array [1]
 	-- @array [1] is expected, else an error will throw.
-	
+
 	for i = #array, 2, -1 do
 		local j = moduleRandom:NextInteger(1, i)
 		array[i], array[j] = array[j], array[i]
 	end
-	
+
 	return array
-	
+
 end
 
 module.shuffleDictionary = function(dictionary : {[any] : any})
-	
+
 	-- # Returns an array of {key, value} pairs in shuffled order.
 	-- # Expects a dictionary (table), else throws an error.
-	
+
 	local newArray = {}
-	
+
 	for key, value in dictionary do
 		table.insert(newArray, {key, value})
 	end
@@ -262,44 +262,44 @@ module.shuffleDictionary = function(dictionary : {[any] : any})
 	end
 
 	return newArray;
-	
+
 end
 
 module.removeDuplicatesFromArray = function(array : {any})
-	
+
 	-- # Returns an array without any duplicate entries.
 	-- @array is expected, else an error will throw.
-	
+
 	local seen, result = {}, {}
-	
+
 	for index, value in array do
 		if not seen[value] then
 			table.insert(result, value)
 			seen[value] = true
 		end
 	end
-	
+
 	return result
-	
+
 end
 
 module.reverseArray = function(array : {any})
-	
+
 	-- # Returns an array in reverse order.
 	-- Example: {"hi", "bye"} becomes: {"bye", "hi"}
-	
+
 	local reversedArray = {}
-	
+
 	for i = #reversedArray, 1, -1 do
 		table.insert(reversedArray, tab[i])
 	end;
-	
+
 	return reversedArray
-	
+
 end
 
 module.fitViewportModel = function(model:Model, viewportFrame:ViewportFrame, cameraRotationValue:CFrame?)
-	
+
 	-- This function has not been updated from CTL 2.0 and may be removed in the future.
 
 	local viewportCamera = viewportFrame.CurrentCamera or module.instance2("Camera", {
@@ -328,42 +328,42 @@ module.fitViewportModel = function(model:Model, viewportFrame:ViewportFrame, cam
 end
 
 module.isBlankString = function(text : string?)
-	
+
 	-- # Returns (boolean)
 	-- # If @text [1] is missing or invalid, or is blank text, (true) is returned.
-	
+
 	if typeof(text) ~= "string" then
 		return true
 	end
-	
+
 	return string.match(text, "^%s*$") ~= nil
-	
+
 end
 
 module.formatTime = function(secondsTime : number)
-	
+
 	-- This function has not been updated from CTL 2.0
 	-- Example [1] | if @secondsTime is 60, the function will return
-	
+
 	return string.format("%02i:%02i", math.floor(secondsTime / 60), secondsTime % 60)
-	
+
 end
 
 module.truncateText = function(text : string, maxLength : number, truncateExtention : string?)
-	
+
 	-- # Returns a string that is no longer than @maxlength [2]
 	-- # @truncateExtention [3] example, if the text is cut off the @truncateExtention will be added to the end. ex: (hello wor...)
-	
+
 	if #text > maxLength then
 		return text:sub(1, maxLength) .. (truncateExtention or "")
 	else
 		return text
 	end
-	
+
 end
 
 module.truncateDecimal = function(number, maxDecimalPlaces)
-	
+
 	-- This function has not been updated from CTL 2.0
 
 	if maxDecimalPlaces <= 0 then
@@ -397,37 +397,37 @@ module.truncateDecimal = function(number, maxDecimalPlaces)
 end
 
 module.getWordCount = function(text : string)
-	
+
 	-- # Returns the number of words in @text [1]
 	-- # Example: if @text were "Hello World, Hello Computer" returns (number) 4
-	
+
 	local count = 0
-	
+
 	for word in text:gmatch("%S+") do
 		count = count + 1
 	end
-	
+
 	return count
-	
+
 end
 
 module.subIllegalCharacters = function(text : string)
-	
+
 	-- # Returns a string that has no illegal characters.
 	-- # Illegal characters are those that are not in the range of [a-z] or [A-Z] // [0-9]
-	
+
 	-- # Example: if @text were "Hello World! #2" the result would be "Hello World! 2"
-	
+
 	local str = tostring(text)
-	
+
 	local newString = string.gsub(str,"%W","");
-	
+
 	return newString
-	
+
 end
 
 module.playRepetitiveSound = function(soundObject:Sound, soundParent:Instance, playbackSpeedRange:NumberRange?, pitchRange:NumberRange?)
-	
+
 	-- This function has not been updated from CTL 2.0 and may be removed in the future.
 
 	if (soundObject ~= nil and soundObject.Parent ~= nil) and soundObject.IsLoaded then
@@ -512,13 +512,13 @@ module.get_model_center = function(Model:Model)
 end
 
 module.stopAnimationsFromList = function(animations : {})
-	
+
 	-- This function has not been updated from CTL 2.0 and may be removed in the future.
-	
+
 	if not animations then
 		return
 	end
-	
+
 	for index, animationTrack in animations do
 
 		if (typeof(animationTrack) ~= "Instance") or not (animationTrack:IsA("AnimationTrack")) then
@@ -528,14 +528,14 @@ module.stopAnimationsFromList = function(animations : {})
 		animationTrack:Stop()
 
 	end
-	
+
 end
 
 module.clearConnection = function(connection : RBXScriptConnection?)
-	
+
 	-- @connection [1] is not expected.
 	-- # Disconnects a connection if it exists
-	
+
 	if typeof(connection) == "RBXScriptConnection" and connection.Connected then
 		connection:Disconnect()
 	end
