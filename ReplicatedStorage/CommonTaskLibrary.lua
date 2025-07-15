@@ -1,5 +1,5 @@
 
--- # Common Task Library 3.0
+-- # Common Task Library 3.01
 -- # Written by Xiko
 
 local PlayerService = game:GetService("Players")
@@ -476,29 +476,6 @@ module.unixTimestampToDate = function(unixTimestamp:number, isAmericanized:boole
 
 end
 
-module.align_model_to_part_surface = function(Model:Model, BasePart:BasePart, UsePrimaryPart:boolean?)
-
-	-- This function has not been updated from CTL 2.0 and may be removed in the future.
-
-
-	-- Positions a model on top of a part.
-	-- @ Model :: The model to be positioned on top of @BasePart
-	-- @ BasePart :: The part to position the model on top of.
-	-- @ UsePrimaryPart :: If true, use the primary part of the model as reference. Otherwise, use Model:MoveTo(Vector3)
-
-	local _, ModelSize = Model:GetBoundingBox()
-	local _CFrame = BasePart.CFrame + Vector3.new(0, BasePart.Size.Y/2 + ModelSize.Y/2, 0)
-
-	local ModelPrimaryPart = UsePrimaryPart and Model.PrimaryPart :: BasePart
-
-	if ModelPrimaryPart then
-		ModelPrimaryPart.CFrame = _CFrame
-	else
-		Model:PivotTo(_CFrame)
-	end
-
-end
-
 module.get_model_size = function(Model:Model)
 	-- This function has not been updated from CTL 2.0 and may be removed in the future.
 	local _, Size = Model:GetBoundingBox()
@@ -509,26 +486,6 @@ module.get_model_center = function(Model:Model)
 	-- This function has not been updated from CTL 2.0 and may be removed in the future.
 	local CFrame, Size = Model:GetBoundingBox()
 	return CFrame
-end
-
-module.stopAnimationsFromList = function(animations : {})
-
-	-- This function has not been updated from CTL 2.0 and may be removed in the future.
-
-	if not animations then
-		return
-	end
-
-	for index, animationTrack in animations do
-
-		if (typeof(animationTrack) ~= "Instance") or not (animationTrack:IsA("AnimationTrack")) then
-			continue
-		end
-
-		animationTrack:Stop()
-
-	end
-
 end
 
 module.clearConnection = function(connection : RBXScriptConnection?)
