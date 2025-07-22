@@ -119,10 +119,13 @@ module.getAnimator = function(humanoid : Humanoid)
 
 end
 
-module.loadAnimatorAnimation = function(animator : Animator, animation : Animation, animationData : {[string] : any}, playAnimation : boolean?, playData : {[string] : any}?)
+module.loadAnimatorAnimation = function(animator : Animator, animationOrId : Animation | number, animationData : {[string] : any}, playAnimation : boolean?, playData : {[string] : any}?)
 
 	-- @animationData cycles though animation data. IE {Looped = true, Priority = ...}
-
+	local animation = (typeof(animationOrId) == "Instance" and animationOrId) or module.instance2("Animation", {
+		AnimationId = (typeof(animationOrId) == "number" and "rbxassetid://"..animationOrId) or ""
+	});
+	
 	local animationTrack = animator:LoadAnimation(animation) :: AnimationTrack
 
 	if animationData then
@@ -496,6 +499,18 @@ module.clearConnection = function(connection : RBXScriptConnection?)
 	if typeof(connection) == "RBXScriptConnection" and connection.Connected then
 		connection:Disconnect()
 	end
+end
+
+module.packageDataToDictionary = function(key, value)
+	
+	if typeof(value) == "table" then
+		return value
+	end
+	
+	return {
+		[key] = value,
+	}
+	
 end
 
 return module
